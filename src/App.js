@@ -43,6 +43,8 @@ class App extends React.Component {
     };
     console.log("posting to " + url);
     const addTask = await fetch(url, requestOptions).then(response => response);
+
+    
     if(addTask.status === 200)
     {
       this._fetchTaskData()
@@ -82,20 +84,14 @@ class App extends React.Component {
   render() {
     return (
       <div className="App">
-          <Navbar bg="dark" variant="dark">
-            <Container>
-              <Navbar.Brand href="#home">
-                <img
-                  alt=""
-                  src="/logo.svg"
-                  width="30"
-                  height="30"
-                  className="d-inline-block align-top"
-                />{' '}
-              2Doo
-              </Navbar.Brand>
-            </Container>
-          </Navbar>
+        <Navbar bg="dark" variant="dark">
+          <Container>
+            <Navbar.Brand>
+            2Doo
+            </Navbar.Brand>
+          </Container>
+        </Navbar>
+        <h1>Tasks</h1>
         <TaskList tasks={this.state.tasks} deleteTask={this._postDeleteTaskData} toggleTaskComplete={this._postToggleTaskComplete} loadingTasks={this.state.loadingTasks} />
         <AddTaskForm addTask={this._postAddTaskData} />
       </div>

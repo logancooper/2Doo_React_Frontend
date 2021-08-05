@@ -1,0 +1,14 @@
+.todo-card-container {
+    padding: 5px;
+    margin: 5px;
+}
+
+.toggle-button{
+    height: 40px;
+    width: 40px;
+}
+
+.delete-task-button{
+    height: 40px;
+    width: 40px;
+}
