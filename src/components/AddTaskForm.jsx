@@ -6,16 +6,38 @@ import { useState } from "react";
 
 const AddTaskForm = (props) => {
     const [show, setShow] = useState(false);
+    const [hasDueDateInput, setHasDueDateInput] = useState(false);
     let taskInput = React.createRef();
+    let dateInput = React.createRef();
 
     const _submitForm = (event) => {
         event.preventDefault();
-        props.addTask(taskInput.current.value);
-        handleClose();
+        if(!hasDueDateInput)
+        {
+            props.addTask(taskInput.current.value, null, hasDueDateInput);
+            handleClose();
+        }
+        else
+        {
+            if(!dateInput.current.value)
+            {
+                alert("Please enter a due date.");
+            }
+            else
+            {
+                props.addTask(taskInput.current.value, dateInput.current.value, hasDueDateInput);
+                handleClose();
+            }
+
+        }
     }
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => 
+    {   setShow(false) 
+        setHasDueDateInput(false)
+    };
     const handleOpen = () => setShow(true);
+    const handleDueDateInputChange = (e) => {setHasDueDateInput(e.target.checked)};
 
     return (
         <>
@@ -26,7 +48,13 @@ const AddTaskForm = (props) => {
                 <Modal.Body>
                     <Form>
                         <Form.Group className="" controlId="formTaskInput">
+                            <Form.Label>Email address</Form.Label>
                             <Form.Control type="text" placeholder="Enter a task" ref={taskInput}/>
+                        </Form.Group>
+                        <Form.Group className="" controlId="formTaskInput">
+                            <Form.Label>Due Date</Form.Label>
+                            <Form.Check onChange={handleDueDateInputChange} type="checkbox" label="Has Due Date"/>
+                            <Form.Control type="date" ref={dateInput}/>
                         </Form.Group>
                     </Form>
                 </Modal.Body>

@@ -34,12 +34,19 @@ class App extends React.Component {
     })
   }
 
-  _postAddTaskData = async (task) => {
+  _postAddTaskData = async (taskContent, unconvertedTaskDueDate, taskHasDueDate) => {
     const url = "http://127.0.0.1:3000/tasks/add";
+
+    let taskDueDate = null;
+    if(taskHasDueDate)
+    {
+      taskDueDate = new Date(unconvertedTaskDueDate);
+    }
+    
     const requestOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ content: task })
+      body: JSON.stringify({ content: taskContent,  dueDate: taskDueDate, hasDueDate: taskHasDueDate})
     };
     console.log("posting to " + url);
     const addTask = await fetch(url, requestOptions).then(response => response);
@@ -81,6 +88,21 @@ class App extends React.Component {
     }
   }
 
+  _postToggleTaskFavorited = async (id) => {
+    const url = "http://127.0.0.1:3000/tasks/toggle-task-favorited";
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ taskID: id })
+    };
+    console.log("posting to " + url);
+    const completeTask = await fetch(url, requestOptions).then(response => response);
+    if(completeTask.status === 200)
+    {
+      this._fetchTaskData()
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -92,7 +114,13 @@ class App extends React.Component {
           </Container>
         </Navbar>
         <h1>Tasks</h1>
-        <TaskList tasks={this.state.tasks} deleteTask={this._postDeleteTaskData} toggleTaskComplete={this._postToggleTaskComplete} loadingTasks={this.state.loadingTasks} />
+        <TaskList tasks={this.state.tasks} 
+        deleteTask={this._postDeleteTaskData} 
+        toggleTaskComplete={this._postToggleTaskComplete}
+        toggleTaskFavorite={this._postToggleTaskFavorited} 
+        loadingTasks={this.state.loadingTasks}
+        addTask={this._postAddTaskData} 
+        />
         <AddTaskForm addTask={this._postAddTaskData} />
       </div>
     );
