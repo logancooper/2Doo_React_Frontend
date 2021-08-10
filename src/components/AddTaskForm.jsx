@@ -5,6 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { useState } from "react";
 
 const AddTaskForm = (props) => {
+    
     const [show, setShow] = useState(false);
     const [hasDueDateInput, setHasDueDateInput] = useState(false);
     let taskInput = React.createRef();
@@ -41,15 +42,15 @@ const AddTaskForm = (props) => {
 
     return (
         <>
-            <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false}>
+            <Modal show={show} onHide={handleClose} backdrop="static" keyboard={false} data-testid="addTaskModal">
                 <Modal.Header closeButton>
                     <Modal.Title>Create Task</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
                     <Form>
                         <Form.Group className="" controlId="formTaskInput">
-                            <Form.Label>Email address</Form.Label>
-                            <Form.Control type="text" placeholder="Enter a task" ref={taskInput}/>
+                            <Form.Label>Enter Task Details</Form.Label>
+                            <Form.Control type="text" placeholder="Enter a task" ref={taskInput} data-testid="addTaskDescriptionText"/>
                         </Form.Group>
                         <Form.Group className="" controlId="formTaskInput">
                             <Form.Label>Due Date</Form.Label>
@@ -60,11 +61,14 @@ const AddTaskForm = (props) => {
                 </Modal.Body>
                 <Modal.Footer>
                     <Button variant="secondary" onClick={handleClose}>Cancel</Button>
-                    <Button onClick={_submitForm}>Add Task</Button>
+                    <Button onClick={_submitForm} data-testid="addTaskButton">Add Task</Button>
                 </Modal.Footer>
             </Modal>
 
-            <Button onClick={handleOpen}>Add Task</Button>
+            <Button 
+            onClick={handleOpen}
+            data-testid="addTaskModalOpenButton"
+            >Add Task</Button>
         </>
     );
 }
